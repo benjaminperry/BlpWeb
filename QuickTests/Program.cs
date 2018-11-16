@@ -1,6 +1,6 @@
 ﻿using BlpData;
 using BlpEntities;
-using BlpWebApp;
+using BlpWebApp.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

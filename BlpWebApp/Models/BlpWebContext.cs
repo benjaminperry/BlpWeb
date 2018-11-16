@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BlpData;
+﻿using BlpData;
 using Microsoft.EntityFrameworkCore;
+using System;
 
-namespace BlpWebApp
+namespace BlpWebApp.Models
 {
     public class BlpWebContext : BlpWebBaseContext
     {

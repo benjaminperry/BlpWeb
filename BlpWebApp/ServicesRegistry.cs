@@ -1,11 +1,9 @@
 ﻿using BlpData;
+using BlpWebApp.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using StructureMap;
-using BlpWebApp.Services;
-using BlpWebApp.Options;
-
 namespace BlpWebApp
 {
     public class ServicesRegistry : Registry
