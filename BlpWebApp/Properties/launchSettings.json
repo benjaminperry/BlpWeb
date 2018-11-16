@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "BlpWebApi": {
+    "BlpWebApp": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
