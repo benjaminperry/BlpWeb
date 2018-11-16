@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<div>
+    <form action="/CsrfTest/IndexPost" method="post">
+        <input type="text" style="width:200px;" />
+        <br />
+        <input type="submit" />
+        @Html.AntiForgeryToken()
+    </form>
+</div>

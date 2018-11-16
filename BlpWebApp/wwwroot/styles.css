@@ -1,0 +1,50 @@
+﻿body {
+    background-color:antiquewhite;
+}
+
+div.MenuBar {
+    border: 1px solid black;
+    border-bottom: none;
+    padding: 5px;
+    background-color: gray;
+}
+
+div.MainContent {
+    border: 1px solid black;
+    border-top: none;
+    padding: 5px;
+    background-color: white;
+}
+
+table.ListingTable
+{
+    border-collapse:collapse;
+}
+
+    table.ListingTable td {
+        border: 1px solid black;
+        padding: 2px;
+        text-align: left;
+    }
+
+    table.ListingTable th {
+        border: 1px solid black;
+        padding: 2px;
+        text-align:left;
+    }
+
+table.DetailTable {
+    border-collapse: collapse;
+}
+
+    table.DetailTable td {
+        border: 1px solid black;
+        padding: 2px;
+        text-align: left;
+    }
+
+    table.DetailTable th {
+        border: 1px solid black;
+        padding: 2px;
+        text-align: left;
+    }

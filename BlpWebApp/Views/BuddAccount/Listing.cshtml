@@ -1,0 +1,45 @@
+﻿@model BuddAccountListingModel
+
+@{
+    ViewData["Title"] = "Budd Accounts";
+}
+
+<div>
+    <table class="ListingTable">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-action="Listing" asp-route-sortOrder="@ViewData["NameSortParam"]">@Html.DisplayNameFor(model => model.Listing[0].Name)</a>
+                </th>
+                <th>
+                    <a asp-action="Listing" asp-route-sortOrder="@ViewData["NumberSortParam"]">@Html.DisplayNameFor(model => model.Listing[0].Number)</a>
+                </th>
+                <th>
+                    <a asp-action="Listing" asp-route-sortOrder="@ViewData["IsActiveSortParam"]">@Html.DisplayNameFor(model => model.Listing[0].IsActive)</a>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach (BuddAccountDetailModel x in Model.Listing)
+                {
+                    <tr>
+                        <td>
+                            @x.Name
+                        </td>
+                        <td>
+                            @x.Number
+                        </td>
+                        <td>
+                            @x.IsActive
+                        </td>
+                        <td>
+                            <a asp-controller="BuddAccount" asp-action="Detail" asp-route-id="@x.Id" asp-route-sortOrder="@ViewData["CurrentSortOrder"]">View</a>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

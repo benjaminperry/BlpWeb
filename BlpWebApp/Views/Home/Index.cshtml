@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+<div>
+    <ul>
+        <li><a asp-area="" asp-controller="Account" asp-action="UserClaims">User Claims</a></li>
+        <li><a asp-area="" asp-controller="Account" asp-action="MsGraph">MS Graph test</a></li>
+        <li><a asp-area="" asp-controller="CsrfTest" asp-action="Index">CSRF test</a></li>
+        <li><a asp-area="" asp-controller="Values" asp-action="Get">api/values</a></li>
+        <li><a asp-area="" asp-controller="TestEntity" asp-action="Get">api/testentity</a></li>
+        <li><a asp-area="" asp-controller="DataProtectionTest" asp-action="Get">api/dataprotectiontest</a></li>
+        <li><a asp-area="" asp-controller="ExceptionTest" asp-action="Index">api/exceptiontest</a></li>
+        <li><a asp-area="" asp-controller="BuddAccount" asp-action="Listing">Budd Accounts</a></li>
+    </ul>
+</div>

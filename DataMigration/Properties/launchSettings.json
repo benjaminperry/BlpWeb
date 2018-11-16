@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "DataMigration": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

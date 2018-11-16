@@ -1,0 +1,36 @@
+﻿@model BuddAccountDetailModel
+
+@{
+    ViewData["Title"] = "Budd Account";
+}
+
+<div>
+    <a asp-controller="BuddAccount" asp-action="Listing" asp-route-sortOrder="@ViewData["CurrentSortOrder"]">Return To List</a>
+    <br /><br />
+    <table class="DetailTable">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <td>
+                @Model.Name
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Number)
+            </th>
+            <td>
+                @Model.Number
+            </td>
+        </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IsActive)
+            </th>
+            <td>
+                @Model.IsActive
+            </td>
+        </tr>
+    </table>
+</div>
