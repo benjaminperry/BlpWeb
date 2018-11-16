@@ -4,7 +4,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
-namespace BlpWebApi.Services
+namespace BlpWebApp.Services
 {
     /// <summary>
     /// Caches access and refresh tokens for Azure AD

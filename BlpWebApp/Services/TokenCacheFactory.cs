@@ -1,11 +1,11 @@
 ﻿using System.Security.Claims;
-using BlpWebApi.Extensions;
+using BlpWebApp.Extensions;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
-namespace BlpWebApi.Services
+namespace BlpWebApp.Services
 {
     /// <summary>
     /// Responsible for creating ADAL token caches for users

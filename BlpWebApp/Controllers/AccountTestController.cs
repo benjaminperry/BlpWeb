@@ -1,7 +1,7 @@
-﻿using BlpWebApi.Extensions;
-using BlpWebApi.Models;
-using BlpWebApi.Options;
-using BlpWebApi.Services;
+﻿using BlpWebApp.Extensions;
+using BlpWebApp.Models;
+using BlpWebApp.Options;
+using BlpWebApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -14,16 +14,16 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace BlpWebApi.Controllers
+namespace BlpWebApp.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountTestController : Controller
     {
         private static readonly HttpClient Client = new HttpClient();
         private readonly ITokenCacheFactory _tokenCacheFactory;
         private readonly AuthOptions _authOptions;
 
-        public AccountController(ITokenCacheFactory tokenCacheFactory, IOptions<AuthOptions> authOptions)
+        public AccountTestController(ITokenCacheFactory tokenCacheFactory, IOptions<AuthOptions> authOptions)
         {
             _tokenCacheFactory = tokenCacheFactory;
             _authOptions = authOptions.Value;
@@ -46,7 +46,7 @@ namespace BlpWebApi.Controllers
             return SignOut(
                 new AuthenticationProperties
                 {
-                    RedirectUri = "/Account/SignedOut"
+                    RedirectUri = "/AccountTest/SignedOut"
                 },
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 OpenIdConnectDefaults.AuthenticationScheme);

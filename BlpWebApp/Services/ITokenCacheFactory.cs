@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
-namespace BlpWebApi.Services
+namespace BlpWebApp.Services
 {
     public interface ITokenCacheFactory
     {

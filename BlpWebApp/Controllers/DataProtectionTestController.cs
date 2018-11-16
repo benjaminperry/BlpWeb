@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace BlpWebApi.Controllers
+namespace BlpWebApp.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]

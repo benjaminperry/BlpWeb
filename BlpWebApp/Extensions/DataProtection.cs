@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 
-namespace BlpWebApi.Extensions
+namespace BlpWebApp.Extensions
 {
     public static class DataProtection
     {

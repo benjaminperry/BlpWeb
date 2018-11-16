@@ -1,6 +1,6 @@
-﻿using BlpWebApi.Extensions;
-using BlpWebApi.Filters;
-using BlpWebApi.Options;
+﻿using BlpWebApp.Extensions;
+using BlpWebApp.Filters;
+using BlpWebApp.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -11,7 +11,7 @@ using StructureMap;
 using System;
 using System.Net;
 
-namespace BlpWebApi
+namespace BlpWebApp
 {
     public class Startup
     {

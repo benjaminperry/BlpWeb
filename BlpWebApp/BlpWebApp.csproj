@@ -27,11 +27,11 @@
     <Content Update="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="Views\Account\SignedOut.cshtml">
+    <Content Update="Views\AccountTest\SignedOut.cshtml">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Account\UserClaims.cshtml">
+    <Content Update="Views\AccountTest\UserClaims.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\CsrfTest\Index.cshtml">

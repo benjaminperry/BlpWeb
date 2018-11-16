@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace BlpWebApi.Controllers
+namespace BlpWebApp.Controllers
 {
     [Authorize]
     public class HomeController : Controller

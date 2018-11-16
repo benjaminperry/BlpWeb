@@ -1,6 +1,6 @@
 ﻿using BlpData;
 using BlpEntities;
-using BlpWebApi.Models;
+using BlpWebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlpWebApi.Controllers
+namespace BlpWebApp.Controllers
 {
     [Authorize]
     public class BuddAccountController : Controller

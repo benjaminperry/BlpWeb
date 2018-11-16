@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
-namespace BlpWebApi.Filters
+namespace BlpWebApp.Filters
 {
     /// <summary>
     /// Triggers authentication if access token cannot be acquired

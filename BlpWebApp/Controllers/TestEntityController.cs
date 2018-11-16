@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BlpEntities;
 using BlpData;
 
-namespace BlpWebApi.Controllers
+namespace BlpWebApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

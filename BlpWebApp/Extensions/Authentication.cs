@@ -1,4 +1,4 @@
-﻿using BlpWebApi.Services;
+﻿using BlpWebApp.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System;
 
-namespace BlpWebApi.Extensions
+namespace BlpWebApp.Extensions
 {
     public static class Authentication
     {

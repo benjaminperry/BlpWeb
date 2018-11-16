@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlpWebApi.Models
+namespace BlpWebApp.Models
 {
     public class BuddAccountListingModel
     {

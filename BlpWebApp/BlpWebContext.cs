@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using BlpData;
 using Microsoft.EntityFrameworkCore;
 
-namespace BlpWebApi
+namespace BlpWebApp
 {
     public class BlpWebContext : BlpWebBaseContext
     {

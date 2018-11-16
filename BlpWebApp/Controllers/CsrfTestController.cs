@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BlpWebApi.Controllers
+namespace BlpWebApp.Controllers
 {
     [Authorize]
     public class CsrfTestController : Controller

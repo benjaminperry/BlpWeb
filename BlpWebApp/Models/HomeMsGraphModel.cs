@@ -1,4 +1,4 @@
-﻿namespace BlpWebApi.Models
+﻿namespace BlpWebApp.Models
 {
     public class HomeMsGraphModel
     {

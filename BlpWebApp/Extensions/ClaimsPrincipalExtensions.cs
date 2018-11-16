@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 
-namespace BlpWebApi.Extensions
+namespace BlpWebApp.Extensions
 {
     public static class ClaimsPrincipalExtensions
     {

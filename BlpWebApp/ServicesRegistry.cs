@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using StructureMap;
-using BlpWebApi.Services;
-using BlpWebApi.Options;
+using BlpWebApp.Services;
+using BlpWebApp.Options;
 
-namespace BlpWebApi
+namespace BlpWebApp
 {
     public class ServicesRegistry : Registry
     {

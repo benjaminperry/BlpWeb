@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlpWebApi.Models
+namespace BlpWebApp.Models
 {
     public class BuddAccountDetailModel
     {

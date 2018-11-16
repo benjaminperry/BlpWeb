@@ -1,4 +1,4 @@
-﻿namespace BlpWebApi.Options
+﻿namespace BlpWebApp.Options
 {
     public class AuthOptions
     {
