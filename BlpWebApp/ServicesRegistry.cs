@@ -1,6 +1,8 @@
 ﻿using BlpData;
 using BlpWebApp.Models;
+using BlpWebApp.Services;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using StructureMap;
@@ -17,6 +19,7 @@ namespace BlpWebApp
             });
             
             For<BlpWebBaseContext>().Use(() => CreateBlpWebContext(configuration.GetConnectionString("blpweb"))).Transient();
+            For<IEmailSender>().Use<EmailSender>().Singleton();
         }
 
         private static BlpWebBaseContext CreateBlpWebContext(string connectionString)

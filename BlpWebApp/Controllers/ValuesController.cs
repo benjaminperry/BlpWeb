@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlpWebApp.Controllers
 {
+    [Authorize(Roles = IdentityRoles.Administrator)]
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
     {
         // GET api/values
         [HttpGet]
-        [HttpGet("/this/is/a/test")]
         public ActionResult<IEnumerable<string>> Get()
         {
             ValuesController x = this;

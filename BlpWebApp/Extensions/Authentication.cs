@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
@@ -26,7 +25,7 @@ namespace BlpWebApp.Extensions
                 .AddOpenIdConnect(opts =>
                 {
                     configuration.GetSection("Authentication").Bind(opts);
-                    
+
                     opts.Events = new OpenIdConnectEvents
                     {
                         OnAuthorizationCodeReceived = async ctx =>

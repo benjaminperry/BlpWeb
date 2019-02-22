@@ -3,6 +3,7 @@
     "DataMigration": {
       "commandName": "Project",
       "environmentVariables": {
+        "BlpWebConnectionStrings__blpweb": "Server=TP-BLP00;Initial Catalog=blpweb;Integrated Security=True",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }

@@ -1,9 +1,12 @@
-﻿using BlpWebApp.Extensions;
+﻿using BlpData;
+using BlpWebApp.Extensions;
 using BlpWebApp.Filters;
+using BlpWebApp.Models;
 using BlpWebApp.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,7 +31,8 @@ namespace BlpWebApp
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<AuthOptions>(Configuration.GetSection("Authentication"));
-            
+            services.Configure<EmailOptions>(Configuration.GetSection("Email"));
+
             services.AddDistributedSqlServerCache(opt =>
                 {
                     opt.ConnectionString = Configuration.GetConnectionString("blpweb");
@@ -45,8 +49,8 @@ namespace BlpWebApp
 
             services.SetupDataProtection(Configuration);
 
-            services.SetupAuthentication(Configuration);
-
+            services.SetupAuthenticationAndIdentity2(Configuration);
+            
             Container container = new Container();
 
             container.Configure(config => 

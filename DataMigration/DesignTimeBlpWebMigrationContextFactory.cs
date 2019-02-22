@@ -36,7 +36,7 @@ namespace DataMigration
 
             if (env == "Development")
             {
-                builder.AddUserSecrets<Program>();
+                //builder.AddUserSecrets<Program>();
             }
 
             IConfigurationRoot configuration = builder.Build();

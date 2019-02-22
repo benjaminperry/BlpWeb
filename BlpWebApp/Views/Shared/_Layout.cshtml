@@ -9,20 +9,14 @@
     </head>
     <body>
         <div class="MenuBar">
-            <ul>
-                <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <li><a asp-controller="AccountTest" asp-action="SignOut">Sign out</a></li>
-                }
-                else
-                {
-                    <li><a asp-controller="AccountTest" asp-action="SignIn">Log in</a></li>
-                }
-            </ul>
+            <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+            <partial name="_LoginPartial" />
+            <br />
         </div>
         <div class="MainContent">
             @RenderBody()
         </div>
+
+        @RenderSection("Scripts", required: false)
     </body>
 </html>

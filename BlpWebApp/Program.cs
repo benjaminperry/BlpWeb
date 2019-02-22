@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using System;
 
 namespace BlpWebApp
 {
@@ -10,7 +12,26 @@ namespace BlpWebApp
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            IWebHost host = CreateWebHostBuilder(args).Build();
+
+            using (IServiceScope scope = host.Services.CreateScope())
+            {
+                IServiceProvider services = scope.ServiceProvider;
+
+                try
+                {
+                    var serviceProvider = services.GetRequiredService<IServiceProvider>();
+                    var configuration = services.GetRequiredService<IConfiguration>();
+                    IdentityRoles.InitializeRoles(serviceProvider, configuration).Wait();
+                }
+                catch (Exception exception)
+                {
+                    var logger = services.GetRequiredService<ILogger<Program>>();
+                    logger.LogError(exception, "An error occured while initializing roles.");
+                }
+            }
+
+            host.Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
