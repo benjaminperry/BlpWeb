@@ -31,7 +31,7 @@ namespace BlpWebApp
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<AuthOptions>(Configuration.GetSection("Authentication"));
-            services.Configure<EmailOptions>(Configuration.GetSection("Email"));
+            services.Configure<EmailOptions>(Configuration.GetSection("SMTP"));
 
             services.AddDistributedSqlServerCache(opt =>
                 {

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit;
+using MailKit.Security;
 using System.Threading.Tasks;
 
 namespace BlpWebApp.Services
@@ -31,9 +32,10 @@ namespace BlpWebApp.Services
             using (SmtpClient client = new SmtpClient())
             {
                 client.ServerCertificateValidationCallback = MailService.DefaultServerCertificateValidationCallback;
-                await client.ConnectAsync(_emailOptions.Host, _emailOptions.Port ?? 0, _emailOptions.SSL);
 
-                if(!(string.IsNullOrWhiteSpace(_emailOptions.Password)))
+                await client.ConnectAsync(_emailOptions.Host, _emailOptions.Port, SecureSocketOptions.StartTlsWhenAvailable);
+                
+                if (!(string.IsNullOrWhiteSpace(_emailOptions.Password)))
                 {
                     await client.AuthenticateAsync(_emailOptions.UserName, _emailOptions.Password);
                 }
