@@ -10,11 +10,11 @@ namespace BlpWebApp.Controllers
     [ApiController]
     public class DataProtectionTestController : Controller
     {
-        IDataProtector _protector;
+        private IDataProtector _DataProtector;
 
         public DataProtectionTestController(IDataProtectionProvider provider)
         {
-            _protector = provider.CreateProtector("DataProtectionTest");
+            _DataProtector = provider.CreateProtector("DataProtectionTest");
         }
 
         [HttpGet]
@@ -22,9 +22,10 @@ namespace BlpWebApp.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
             string x = "This will be protected";
-            string y = _protector.Protect(x);
+            string y = _DataProtector.Protect(x);
+            string z = _DataProtector.Unprotect(y);
 
-            return new string[] { "Unprotected: " + x, "Protected: " + y };
+            return new string[] { "Original: " + x, "Protected: " + y, "Unprotected: " + z };
         }
     }
 }

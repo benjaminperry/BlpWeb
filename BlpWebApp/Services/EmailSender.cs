@@ -32,6 +32,7 @@ namespace BlpWebApp.Services
             using (SmtpClient client = new SmtpClient())
             {
                 client.ServerCertificateValidationCallback = MailService.DefaultServerCertificateValidationCallback;
+                //client.ServerCertificateValidationCallback = (s, c, h, e) => true;
 
                 await client.ConnectAsync(_emailOptions.Host, _emailOptions.Port, SecureSocketOptions.StartTlsWhenAvailable);
                 

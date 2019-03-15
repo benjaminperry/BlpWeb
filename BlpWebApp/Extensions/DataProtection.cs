@@ -22,6 +22,7 @@ namespace BlpWebApp.Extensions
 
             return services
                 .AddDataProtection()
+                .SetApplicationName("BlpWeb")
                 .PersistKeysToAzureBlobStorage(container, keyFileName);
         }
     }

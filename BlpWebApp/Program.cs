@@ -40,6 +40,7 @@ namespace BlpWebApp
                 .ConfigureAppConfiguration((builderContext, builder) =>
                     {
                         builder.AddEnvironmentVariables("BlpWeb");
+                        builder.AddCommandLine(args);
                     })
                 .UseStartup<Startup>()
                 .ConfigureLogging(logging =>
