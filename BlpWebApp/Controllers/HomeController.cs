@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using BlpWebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace BlpWebApp.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
         ILogger logger;
@@ -21,6 +22,13 @@ namespace BlpWebApp.Controllers
             logger.Log(LogLevel.Information, "This is a test log message from HomeController.Index.");
             
             return View();
+        }
+
+        [AllowAnonymous]
+        public IActionResult Error()
+        {
+            logger.Log(LogLevel.Information, "The /Home/Error page was requested!");
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

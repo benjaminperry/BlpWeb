@@ -13,10 +13,18 @@ namespace QuickTests
 
         static void Main(string[] args)
         {
-
+            DelegateTest();
             Console.WriteLine("Press enter to terminate");
             Console.ReadLine();
         }
+
+        private static void DelegateTest()
+        {
+            Func<int, int, int> func = (int x, int y) =>  x + y;
+            int z = func(1, 2);
+            Console.WriteLine($"The result is {z}.");
+        }
+
 
         private static void EntityTest01()
         {

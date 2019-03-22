@@ -1,5 +1,5 @@
-﻿using BlpData;
-using BlpWebApp.Services;
+﻿using BlpWebApp.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http;
@@ -9,18 +9,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using System;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace BlpWebApp.Extensions
 {
-    public static class AuthenticationAndIdentityServiceCollectionExtensions2
+    public static class AuthenticationExtensions
     {
         public const string AzureAdOpenIdConnectScheme = "AzureAdOpenIdConnect";
 
-        public static IdentityBuilder SetupAuthenticationAndIdentity2(this IServiceCollection services, IConfiguration configuration)
+        public static AuthenticationBuilder SetupAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
+            AuthenticationBuilder authenticationBuilder =
             services
                 .AddAuthentication(
                     o =>
@@ -33,6 +31,10 @@ namespace BlpWebApp.Extensions
                     IdentityConstants.ApplicationScheme,
                     o =>
                     {
+                        o.LoginPath = new PathString("/Identity/Account/Login");
+                        o.LogoutPath = new PathString("/Identity/Account/Logout");
+                        o.AccessDeniedPath = new PathString("/Identity/Account/AccessDenied");
+
                         o.Events = new CookieAuthenticationEvents
                         {
                             OnValidatePrincipal = SecurityStampValidator.ValidatePrincipalAsync
@@ -97,33 +99,7 @@ namespace BlpWebApp.Extensions
                         };
                     });
             
-            services.AddHttpContextAccessor();
-
-            IdentityBuilder identityBuilder = services
-                .AddIdentityCore<IdentityUser>()
-                .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<BlpWebBaseContext>()
-                .AddSignInManager()
-                .AddDefaultTokenProviders();
-
-            services.TryAddTransient<IEmailSender, EmailSender>();
-
-            ServiceDescriptor sd = new ServiceDescriptor(
-                typeof(IUserClaimsPrincipalFactory<IdentityUser>),
-                typeof(UserClaimsPrincipalFactory<IdentityUser, IdentityRole>),
-                ServiceLifetime.Scoped);
-
-            services.Replace(sd);
-
-            services.ConfigureApplicationCookie(
-                o =>
-                {
-                    o.LoginPath = new PathString("/Identity/Account/Login");
-                    o.LogoutPath = new PathString("/Identity/Account/Logout");
-                    o.AccessDeniedPath = new PathString("/Identity/Account/AccessDenied");
-                });
-
-            return identityBuilder;
+            return authenticationBuilder;
         }
     }
 }

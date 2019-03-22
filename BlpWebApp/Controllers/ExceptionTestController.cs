@@ -19,25 +19,38 @@ namespace BlpWebApp.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            ApplicationException exInnerInner = new ApplicationException("Test inner inner exception.");
-            exInnerInner.Data.Add("Test1", "Data1");
-            exInnerInner.Data.Add("Test2", "Data2");
-            exInnerInner.Data.Add("Test3", "Data3");
-
-            ApplicationException exInner = new ApplicationException("Test inner exception.", exInnerInner);
-            exInner.Data.Add("Test1", "Data1");
-            exInner.Data.Add("Test2", "Data2");
-            exInner.Data.Add("Test3", "Data3");
-
-            ApplicationException exOuter = new ApplicationException("Test exception.", exInner);
-            exOuter.Data.Add("Test1", "Data1");
-            exOuter.Data.Add("Test2", "Data2");
-            exOuter.Data.Add("Test3", "Data3");
-
-            
-            throw exOuter;
+            ThrowOuter();
             
             return View();
+        }
+
+        private void ThowInnerInner()
+        {
+            throw new ApplicationException("Exception from ThrowInnerInner");
+        }
+
+        private void ThrowInner()
+        {
+            try
+            {
+                ThowInnerInner();
+            }
+            catch(Exception ex)
+            {
+                throw new ApplicationException("Exception from ThrowInner", ex);
+            }
+        }
+
+        private void ThrowOuter()
+        {
+            try
+            {
+                ThrowInner();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Exception from ThrowOuter", ex);
+            }
         }
     }
 }

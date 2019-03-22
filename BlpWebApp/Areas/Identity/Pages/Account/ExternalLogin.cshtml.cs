@@ -79,8 +79,10 @@ namespace BlpWebApp.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor : true);
             if (result.Succeeded)
             {
-                // ToDo: This is testing:
-                if (info.LoginProvider == AuthenticationAndIdentityServiceCollectionExtensions2.AzureAdOpenIdConnectScheme)
+                // Begin customized by Ben: If user logged in using Azure AD OpenId Connect, copy the 
+                // objectidifier claim. The combined with the access token will allow us to query Microsoft
+                // graph for info reguarding this user.
+                if (info.LoginProvider == AuthenticationExtensions.AzureAdOpenIdConnectScheme)
                 {
                     var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
                     IList<Claim> claims = await _userManager.GetClaimsAsync(user);
@@ -96,7 +98,7 @@ namespace BlpWebApp.Areas.Identity.Pages.Account
                         await _signInManager.RefreshSignInAsync(user);
                     }
                 }
-                // ToDo: End testing:
+                // End customized by Ben
 
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
@@ -141,14 +143,16 @@ namespace BlpWebApp.Areas.Identity.Pages.Account
                     result = await _userManager.AddLoginAsync(user, info);
                     if (result.Succeeded)
                     {
-                        // ToDo: This is testing:
-                        if (info.LoginProvider == AuthenticationAndIdentityServiceCollectionExtensions2.AzureAdOpenIdConnectScheme)
+                        // Begin customized by Ben: If user logged in using Azure AD OpenId Connect, copy the 
+                        // objectidifier claim. The combined with the access token will allow us to query Microsoft
+                        // graph for info reguarding this user.
+                        if (info.LoginProvider == AuthenticationExtensions.AzureAdOpenIdConnectScheme)
                         {
                             await _userManager.AddClaimAsync(
                                 user, 
                                 info.Principal.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier"));
                         }
-                        // ToDo: End testing:
+                        // End customized by Ben
 
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
