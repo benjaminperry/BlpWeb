@@ -37,6 +37,7 @@ namespace BlpWebApp
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost
                 .CreateDefaultBuilder(args)
+                .UseUrls("https://localhost:3000", "https://192.168.94.144:3000")
                 .ConfigureAppConfiguration((builderContext, builder) =>
                     {
                         builder.AddEnvironmentVariables("BlpWeb");

@@ -10,8 +10,6 @@ namespace BlpWebApp.Extensions
 {
     public static class IdentityExtensions
     {
-        public const string AzureAdOpenIdConnectScheme = "AzureAdOpenIdConnect";
-
         public static IdentityBuilder SetupIdentity(this IServiceCollection services, IConfiguration configuration)
         {
             IdentityBuilder identityBuilder = services

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
@@ -31,12 +32,22 @@ namespace BlpWebApp.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public IActionResult DefaultChallenge(string redirectUrl = "/")
+        {
+            return Challenge(new AuthenticationProperties
+            {
+                RedirectUri = redirectUrl
+            });
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
         public IActionResult SignIn(string redirectUrl = "/")
         {
             return Challenge(new AuthenticationProperties
             {
                 RedirectUri = redirectUrl
-            }, OpenIdConnectDefaults.AuthenticationScheme);
+            }, AuthenticationExtensions.AzureAdOpenIdConnectScheme);
         }
 
         [HttpGet]
@@ -48,8 +59,9 @@ namespace BlpWebApp.Controllers
                 {
                     RedirectUri = "/AccountTest/SignedOut"
                 },
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                OpenIdConnectDefaults.AuthenticationScheme);
+                IdentityConstants.ApplicationScheme,
+                IdentityConstants.ExternalScheme,
+                AuthenticationExtensions.AzureAdOpenIdConnectScheme);
         }
 
         [HttpGet]

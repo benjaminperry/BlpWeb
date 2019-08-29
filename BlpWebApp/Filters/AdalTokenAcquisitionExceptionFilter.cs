@@ -15,7 +15,7 @@ namespace BlpWebApp.Filters
             //If ADAL failed to acquire access token
             if (context.Exception is AdalSilentTokenAcquisitionException)
             {
-                //Send user to Azure AD to re-authenticate
+                //Send user to login page to re-authenticate
                 context.Result = new ChallengeResult();
             }
         }

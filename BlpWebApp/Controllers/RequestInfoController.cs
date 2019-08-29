@@ -12,7 +12,7 @@ namespace BlpWebApp.Controllers
     public class RequestInfoController : ControllerBase
     {
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public IActionResult Get()
         {
             string protocol = Request.Protocol;
             System.Net.IPAddress remoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
@@ -33,7 +33,7 @@ namespace BlpWebApp.Controllers
 
             ret.AddRange(headerDictionary.Select(h => h.ToString()));
 
-            return ret;
+            return Ok(ret);
         }
     }
 }

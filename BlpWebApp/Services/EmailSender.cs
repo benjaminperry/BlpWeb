@@ -18,7 +18,7 @@ namespace BlpWebApp.Services
             _emailOptions = options.Value;
         }
 
-        public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+        public async Task SendEmailAsync(string email, string subject, string body)
         {
             MimeMessage message = new MimeMessage();
             message.From.Add(new MailboxAddress(_emailOptions.From));
@@ -26,7 +26,7 @@ namespace BlpWebApp.Services
             message.Subject = subject;
             message.Body = new TextPart("html")
                 {
-                    Text = htmlMessage
+                    Text = body
                 };
 
             using (SmtpClient client = new SmtpClient())

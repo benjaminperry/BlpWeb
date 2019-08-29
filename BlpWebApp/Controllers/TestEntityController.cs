@@ -20,9 +20,9 @@ namespace BlpWebApp.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TestEntity>> Get()
+        public IActionResult Get()
         {
-            return blpWebContext.TestEntities.Where(x => true).ToList();
+            return Ok(blpWebContext.TestEntities.Where(x => true).ToList());
         }
     }
 }

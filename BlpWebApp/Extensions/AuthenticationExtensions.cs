@@ -23,9 +23,7 @@ namespace BlpWebApp.Extensions
                 .AddAuthentication(
                     o =>
                     {
-                        o.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
-                        o.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
-                        o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+                        o.DefaultScheme = IdentityConstants.ApplicationScheme;
                     })
                 .AddCookie(
                     IdentityConstants.ApplicationScheme,
@@ -37,6 +35,8 @@ namespace BlpWebApp.Extensions
 
                         o.Events = new CookieAuthenticationEvents
                         {
+                            // > Without this, any user who obtains a session cookie can keep using it even if they are
+                            //   no longer a valid user in the user store. By default this validates every 30 minutes.
                             OnValidatePrincipal = SecurityStampValidator.ValidatePrincipalAsync
                         };
                     })
@@ -44,12 +44,11 @@ namespace BlpWebApp.Extensions
                     IdentityConstants.ExternalScheme, 
                     o =>
                     {
-                        o.Cookie.Name = IdentityConstants.ExternalScheme;
                         o.ExpireTimeSpan = TimeSpan.FromMinutes(5);
                     })
                 .AddCookie(
-                    IdentityConstants.TwoFactorRememberMeScheme, 
-                    o => 
+                    IdentityConstants.TwoFactorRememberMeScheme,
+                    o =>
                     {
                         o.Cookie.Name = IdentityConstants.TwoFactorRememberMeScheme;
                         o.Events = new CookieAuthenticationEvents
@@ -58,7 +57,7 @@ namespace BlpWebApp.Extensions
                         };
                     })
                 .AddCookie(
-                    IdentityConstants.TwoFactorUserIdScheme, 
+                    IdentityConstants.TwoFactorUserIdScheme,
                     o =>
                     {
                         o.Cookie.Name = IdentityConstants.TwoFactorUserIdScheme;
@@ -70,6 +69,9 @@ namespace BlpWebApp.Extensions
                     o =>
                     {
                         configuration.GetSection("Authentication").Bind(o);
+                        o.TokenValidationParameters.ValidateIssuer = true;
+                        o.TokenValidationParameters.ValidateAudience = true;
+                        o.TokenValidationParameters.ValidateLifetime = true;
                         o.SignInScheme = IdentityConstants.ExternalScheme;
 
                         o.Events = new OpenIdConnectEvents

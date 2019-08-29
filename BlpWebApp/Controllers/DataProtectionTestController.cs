@@ -19,13 +19,13 @@ namespace BlpWebApp.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ActionResult<IEnumerable<string>> Get()
+        public IActionResult Get()
         {
             string x = "This will be protected";
             string y = _DataProtector.Protect(x);
             string z = _DataProtector.Unprotect(y);
 
-            return new string[] { "Original: " + x, "Protected: " + y, "Unprotected: " + z };
+            return Ok(new string[] { "Original: " + x, "Protected: " + y, "Unprotected: " + z });
         }
     }
 }
