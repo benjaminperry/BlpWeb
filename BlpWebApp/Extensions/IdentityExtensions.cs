@@ -15,7 +15,7 @@ namespace BlpWebApp.Extensions
             IdentityBuilder identityBuilder = services
                 .AddIdentityCore<IdentityUser>()
                 .AddRoles<IdentityRole>()
-                .AddEntityFrameworkStores<BlpWebBaseContext>()
+                .AddEntityFrameworkStores<BlpContext>()
                 .AddSignInManager()
                 .AddDefaultTokenProviders();
 

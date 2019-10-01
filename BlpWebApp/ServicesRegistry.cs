@@ -1,11 +1,13 @@
-﻿using BlpData;
-using BlpWebApp.Models;
+﻿using BES.Database.Entities;
+using BlpData;
 using BlpWebApp.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using StructureMap;
+using System.Collections.Generic;
+
 namespace BlpWebApp
 {
     public class ServicesRegistry : Registry
@@ -15,18 +17,20 @@ namespace BlpWebApp
             Scan(_ =>
             {
                 _.AssemblyContainingType<Startup>();
+                _.AssemblyContainingType<IBuildModel>();
                 _.WithDefaultConventions();
+                _.AddAllTypesOf<IBuildModel>();
             });
-            
-            For<BlpWebBaseContext>().Use(() => CreateBlpWebContext(configuration.GetConnectionString("blpweb"))).Transient();
+
+            For<BlpContext>().Use(ctx => CreateBlpContext(configuration, ctx.GetAllInstances<IBuildModel>())).Transient();
             For<IEmailSender>().Use<EmailSender>().Singleton();
         }
 
-        private static BlpWebBaseContext CreateBlpWebContext(string connectionString)
+        private static BlpContext CreateBlpContext(IConfiguration configuration, IEnumerable<IBuildModel> modelBuilders)
         {
-            var builder = new DbContextOptionsBuilder<BlpWebBaseContext>();
-            builder.UseSqlServer(connectionString);
-            return new BlpWebContext(builder.Options);
+            var builder = new DbContextOptionsBuilder<BlpContext>();
+            builder.UseSqlServer(configuration.GetConnectionString("blpweb"));
+            return new BlpContext(builder.Options, modelBuilders);
         }
     }
 }

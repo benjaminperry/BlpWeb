@@ -12,17 +12,17 @@ namespace BlpWebApp.Controllers
     [ApiController]
     public class TestEntityController : ControllerBase
     {
-        private BlpWebBaseContext blpWebContext;
+        private BlpContext blpContext;
 
-        public TestEntityController(BlpWebBaseContext blpWebContext)
+        public TestEntityController(BlpContext blpContext)
         {
-            this.blpWebContext = blpWebContext;
+            this.blpContext = blpContext;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(blpWebContext.TestEntities.Where(x => true).ToList());
+            return Ok(blpContext.TestEntities.Where(x => true).ToList());
         }
     }
 }

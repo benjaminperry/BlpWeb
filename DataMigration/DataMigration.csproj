@@ -8,10 +8,11 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
+    <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BlpData\BlpData.csproj" />
+    <ProjectReference Include="..\BlpWebApp\BlpWebApp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

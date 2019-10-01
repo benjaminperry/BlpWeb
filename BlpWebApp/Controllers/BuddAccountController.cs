@@ -13,11 +13,11 @@ namespace BlpWebApp.Controllers
     [Authorize]
     public class BuddAccountController : Controller
     {
-        private BlpWebBaseContext blpWebContext;
+        private BlpContext blpContext;
 
-        public BuddAccountController(BlpWebBaseContext blpWebContext)
+        public BuddAccountController(BlpContext blpContext)
         {
-            this.blpWebContext = blpWebContext;
+            this.blpContext = blpContext;
         }
         
         public async Task<ActionResult> Listing(string sortOrder)
@@ -59,11 +59,11 @@ namespace BlpWebApp.Controllers
 
             if(asc)
             {
-                buddAccounts = blpWebContext.BuddAccounts.OrderBy(e => EF.Property<object>(e, sortProp));
+                buddAccounts = blpContext.BuddAccounts.OrderBy(e => EF.Property<object>(e, sortProp));
             }
             else
             {
-                buddAccounts = blpWebContext.BuddAccounts.OrderByDescending(e => EF.Property<object>(e, sortProp));
+                buddAccounts = blpContext.BuddAccounts.OrderByDescending(e => EF.Property<object>(e, sortProp));
             }
 
             IList<BuddAccountDetailModel> forView = await buddAccounts.
@@ -81,7 +81,7 @@ namespace BlpWebApp.Controllers
         {
             ViewData["CurrentSortOrder"] = sortOrder;
 
-            BuddAccount fromDb = await blpWebContext.BuddAccounts.
+            BuddAccount fromDb = await blpContext.BuddAccounts.
                 AsNoTracking().
                 FirstOrDefaultAsync(x => x.Id == id);
 

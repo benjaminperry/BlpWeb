@@ -1,46 +1,15 @@
-﻿using BlpData;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.IO;
+﻿using Microsoft.EntityFrameworkCore.Design;
+using StructureMap;
 
 namespace DataMigration
 {
-    class DesignTimeBlpWebMigrationContextFactory : IDesignTimeDbContextFactory<BlpWebMigrationContext>
+    public class DesignTimeBlpWebMigrationContextFactory : IDesignTimeDbContextFactory<DataMigrationContext>
     {
-        static private IConfigurationRoot _Configuration;
-        public static IConfigurationRoot Configuration => _Configuration;
-
-        public BlpWebMigrationContext CreateDbContext(string[] args)
+        public DataMigrationContext CreateDbContext(string[] args)
         {
-            ConfigInit();
-
-            string connectionString = Configuration.GetConnectionString("blpweb");
-            
-            var dbContextOptionsBuilder = new DbContextOptionsBuilder<BlpWebBaseContext>();
-            dbContextOptionsBuilder.UseSqlServer(connectionString);
-            return new BlpWebMigrationContext(dbContextOptionsBuilder.Options);
-        }
-
-        static void ConfigInit()
-        {
-            var builder = new ConfigurationBuilder();
-
-            builder
-                .SetBasePath(System.AppDomain.CurrentDomain.BaseDirectory)
-                .AddJsonFile("appsettings.json", true, true)
-                .AddEnvironmentVariables("BlpWeb");
-
-            string env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-            if (env == "Development")
-            {
-                //builder.AddUserSecrets<Program>();
-            }
-
-            IConfigurationRoot configuration = builder.Build();
-            _Configuration = configuration;
+#pragma warning disable IDE0067 // Dispose objects before losing scope
+            return new Container(new DataMigrationServicesRegistry()).GetInstance<DataMigrationContext>();
+#pragma warning restore IDE0067 // Dispose objects before losing scope
         }
     }
 }

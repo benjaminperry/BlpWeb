@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataMigration.Migrations
 {
-    [DbContext(typeof(BlpWebMigrationContext))]
+    [DbContext(typeof(DataMigrationContext))]
     [Migration("20181116210812_AddedAspNetIdentity")]
     partial class AddedAspNetIdentity
     {

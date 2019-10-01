@@ -126,19 +126,22 @@ namespace BlpWebApp.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-
             var userId = await _userManager.GetUserIdAsync(user);
             var email = await _userManager.GetEmailAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
             var callbackUrl = Url.Page(
                 "/Account/ConfirmEmail",
                 pageHandler: null,
-                values: new { userId = userId, code = code },
+                values: new { userId = userId, code = code, area = "Identity" },
                 protocol: Request.Scheme);
+
+            var encodedCallBackUrl = HtmlEncoder.Default.Encode(callbackUrl);
+
             await _emailSender.SendEmailAsync(
                 email,
                 "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                $"<html><body><div>Please confirm your account by <a href='{encodedCallBackUrl}' rel=\"notrack\">clicking here</a>.</div></body></html>");
 
             StatusMessage = "Verification email sent. Please check your email.";
             return RedirectToPage();

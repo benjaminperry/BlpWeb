@@ -1,9 +1,8 @@
-﻿using BlpData;
-using BlpEntities;
+﻿using BlpEntities;
 using Microsoft.EntityFrameworkCore;
+using StructureMap;
 using System;
 using System.Linq;
-using Microsoft.Extensions.Configuration;
 
 namespace DataMigration
 {
@@ -14,18 +13,31 @@ namespace DataMigration
             Console.WriteLine("Running EF Migrations");
             try
             {
-                var dbContextFactory = new DesignTimeBlpWebMigrationContextFactory();
+                var container = new Container(new DataMigrationServicesRegistry());
 
-                using (BlpWebMigrationContext dbContext = dbContextFactory.CreateDbContext(null))
+                using (DataMigrationContext migrationContext = container.GetInstance<DataMigrationContext>())
                 {
-                    dbContext.Database.Migrate();
+                    Console.WriteLine();
+                    Console.WriteLine($"New migrations:");
 
-                    foreach (var appliedMigration in dbContext.Database.GetAppliedMigrations())
-                    {
-                        Console.WriteLine($"Applied {appliedMigration}");
-                    }
+                    var newMigrations = migrationContext.Database.GetPendingMigrations();
+                    if (!newMigrations.Any())
+                        Console.WriteLine("There are no new migrations to apply");
 
-                    if (!dbContext.TestEntities.Any())
+                    foreach (var newMigration in newMigrations)
+                        Console.WriteLine($"  - {newMigration}");
+
+                    migrationContext.Database.Migrate();
+
+                    Console.WriteLine();
+                    Console.WriteLine($"Applied migrations:");
+                    foreach (var appliedMigration in migrationContext.Database.GetAppliedMigrations())
+                        Console.WriteLine($"  - {appliedMigration}");
+
+                    Console.WriteLine();
+                    Console.WriteLine("EF Migrationss complete");
+
+                    if (!migrationContext.TestEntities.Any())
                     {
                         TestEntity testEntity01 = new TestEntity { Description = "This is test 01" };
                         TestEntity testEntity02 = new TestEntity { Description = "This is test 02" };
@@ -45,24 +57,24 @@ namespace DataMigration
                         TestEntityNote testEntityNote05 = new TestEntityNote { Note = "This is a test note", TestEntity = testEntity01 };
 
 
-                        dbContext.TestEntities.Add(testEntity01);
-                        dbContext.TestEntities.Add(testEntity02);
-                        dbContext.TestEntities.Add(testEntity03);
-                        dbContext.TestEntities.Add(testEntity04);
-                        dbContext.TestEntities.Add(testEntity05);
-                        dbContext.TestEntities.Add(testEntity06);
-                        dbContext.TestEntities.Add(testEntity07);
-                        dbContext.TestEntities.Add(testEntity08);
-                        dbContext.TestEntities.Add(testEntity09);
-                        dbContext.TestEntities.Add(testEntity10);
+                        migrationContext.TestEntities.Add(testEntity01);
+                        migrationContext.TestEntities.Add(testEntity02);
+                        migrationContext.TestEntities.Add(testEntity03);
+                        migrationContext.TestEntities.Add(testEntity04);
+                        migrationContext.TestEntities.Add(testEntity05);
+                        migrationContext.TestEntities.Add(testEntity06);
+                        migrationContext.TestEntities.Add(testEntity07);
+                        migrationContext.TestEntities.Add(testEntity08);
+                        migrationContext.TestEntities.Add(testEntity09);
+                        migrationContext.TestEntities.Add(testEntity10);
 
-                        dbContext.TestEntityNotes.Add(testEntityNote01);
-                        dbContext.TestEntityNotes.Add(testEntityNote02);
-                        dbContext.TestEntityNotes.Add(testEntityNote03);
-                        dbContext.TestEntityNotes.Add(testEntityNote04);
-                        dbContext.TestEntityNotes.Add(testEntityNote05);
+                        migrationContext.TestEntityNotes.Add(testEntityNote01);
+                        migrationContext.TestEntityNotes.Add(testEntityNote02);
+                        migrationContext.TestEntityNotes.Add(testEntityNote03);
+                        migrationContext.TestEntityNotes.Add(testEntityNote04);
+                        migrationContext.TestEntityNotes.Add(testEntityNote05);
 
-                        dbContext.SaveChanges();
+                        migrationContext.SaveChanges();
                     }
                 }
             }
@@ -72,7 +84,6 @@ namespace DataMigration
                 throw;
             }
 
-            Console.WriteLine("EF Migrations complete");
             Console.WriteLine("Press enter to terminate");
             Console.ReadLine();
 

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataMigration.Migrations
 {
-    [DbContext(typeof(BlpWebMigrationContext))]
+    [DbContext(typeof(DataMigrationContext))]
     partial class BlpWebMigrationContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

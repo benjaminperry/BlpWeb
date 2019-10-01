@@ -79,6 +79,8 @@ namespace BlpWebApp
             //    app.UseExceptionHandler("/Home/Error");
             //}
 
+            app.UsePathBase(Configuration["PathBase"]);
+
             // > Exception Handling:
             app.UseGlobalExceptionHandler(exConfig =>
             {
@@ -117,7 +119,9 @@ namespace BlpWebApp
             //   probably be configured!):
             ForwardedHeadersOptions fho = new ForwardedHeadersOptions()
                 { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto };
-            fho.KnownNetworks.Add(new IPNetwork(IPAddress.Parse("::ffff:10.0.0.0"), 120));
+            IPAddress address1 = IPAddress.Parse("::ffff:10.0.0.0");
+            IPNetwork network1 = new IPNetwork(address1, 104);
+            fho.KnownNetworks.Add(network1);
             app.UseForwardedHeaders(fho);
 
             // > Static files will be unauthenticated:

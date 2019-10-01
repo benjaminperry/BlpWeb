@@ -26,21 +26,21 @@ namespace QuickTests
         }
 
 
-        private static void EntityTest01()
-        {
-            using (BlpWebBaseContext context = CreateBlpWebContextContext())
-            {
-                IOrderedQueryable<BuddAccount> buddAccounts;
+        //private static void EntityTest01()
+        //{
+        //    using (BlpData.BlpContext context = CreateBlpWebContextContext())
+        //    {
+        //        IOrderedQueryable<BuddAccount> buddAccounts;
 
 
-            }
-        }
+        //    }
+        //}
 
-        private static BlpWebBaseContext CreateBlpWebContextContext()
-        {
-            var builder = new DbContextOptionsBuilder<BlpWebBaseContext>();
-            builder.UseSqlServer(connectionString);
-            return new BlpWebContext(builder.Options);
-        }
+        //private static BlpContext CreateBlpWebContextContext()
+        //{
+        //    var builder = new DbContextOptionsBuilder<BlpData.BlpContext>();
+        //    builder.UseSqlServer(connectionString);
+        //    return new BlpWebApp.Models.BlpContext(builder.Options);
+        //}
     }
 }
