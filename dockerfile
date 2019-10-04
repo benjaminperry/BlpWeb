@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0.100 AS build-env
 WORKDIR /app
 
 # Copy everything to working dir and restore packages
@@ -14,7 +14,7 @@ WORKDIR /app/Blp.NetCoreLearning.DataMigration
 RUN dotnet build -c Release -o out
 
 # build runtime image
-FROM microsoft/dotnet:2.1-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0.0
 WORKDIR /app
 
 # Copy the published Blp.NetCoreLearning.WebApp

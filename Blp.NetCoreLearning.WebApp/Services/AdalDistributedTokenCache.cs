@@ -43,12 +43,12 @@ namespace Blp.NetCoreLearning.WebApp.Services
             if (cachedData != null)
             {
                 //Decrypt and deserialize the cached data
-                Deserialize(_dataProtector.Unprotect(cachedData));
+                DeserializeAdalV3(_dataProtector.Unprotect(cachedData));
             }
             else
             {
                 //Ensures the cache is cleared in TokenCache
-                Deserialize(null);
+                DeserializeAdalV3(null);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Blp.NetCoreLearning.WebApp.Services
             {
                 //In this case the cache state has changed, maybe a new token was written
                 //So we encrypt and write the data to the distributed cache
-                var data = _dataProtector.Protect(Serialize());
+                var data = _dataProtector.Protect(SerializeAdalV3());
                 //Put data to both caches, so that 1) it is available right away in-memory here
                 //and 2) in L2 for other instances
                 _distributedCache.Set(GetCacheKey(), data, new DistributedCacheEntryOptions
