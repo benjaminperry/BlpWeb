@@ -12,7 +12,7 @@ namespace Blp.NetCoreLearning.WebApp
 {
     public class ServicesRegistry : Registry
     {
-        public ServicesRegistry(IConfiguration configuration, IHostingEnvironment environment)
+        public ServicesRegistry(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Scan(_ =>
             {

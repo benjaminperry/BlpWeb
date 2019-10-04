@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Azure.Storage;
+using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.WindowsAzure.Storage;
 
 namespace Blp.NetCoreLearning.WebApp.Extensions
 {

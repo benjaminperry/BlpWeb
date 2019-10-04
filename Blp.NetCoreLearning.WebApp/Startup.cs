@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using StructureMap;
 using System;
@@ -18,11 +19,11 @@ namespace Blp.NetCoreLearning.WebApp
 {
     public class Startup
     {
-        public IHostingEnvironment Environment { get; }
+        public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
         public IHttpContextAccessor HttpContextAccessor { get; }
 
-        public Startup(IHostingEnvironment env, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             Environment = env;
             Configuration = configuration;
@@ -48,11 +49,14 @@ namespace Blp.NetCoreLearning.WebApp
             services.SetupAuthentication(Configuration);
             services.SetupIdentity(Configuration);
 
-            services.AddMvc(opts =>
-                {
-                    opts.Filters.Add(typeof(AdalTokenAcquisitionExceptionFilter));
-                })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            services
+                .AddMvc(
+                    opts =>
+                    {
+                        opts.Filters.Add(typeof(AdalTokenAcquisitionExceptionFilter));
+                        opts.EnableEndpointRouting = false;
+                    })
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddControllersAsServices();
 
             Container container = new Container();
