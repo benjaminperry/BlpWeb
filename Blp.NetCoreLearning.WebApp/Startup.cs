@@ -21,13 +21,11 @@ namespace Blp.NetCoreLearning.WebApp
     {
         public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
-        public IHttpContextAccessor HttpContextAccessor { get; }
 
-        public Startup(IWebHostEnvironment env, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
         {
             Environment = env;
             Configuration = configuration;
-            HttpContextAccessor = httpContextAccessor;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -50,11 +48,9 @@ namespace Blp.NetCoreLearning.WebApp
             services.SetupIdentity(Configuration);
 
             services
-                .AddMvc(
-                    opts =>
+                .AddMvc(opts =>
                     {
                         opts.Filters.Add(typeof(AdalTokenAcquisitionExceptionFilter));
-                        opts.EnableEndpointRouting = false;
                     })
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddControllersAsServices();
@@ -87,37 +83,38 @@ namespace Blp.NetCoreLearning.WebApp
 
             // > Exception Handling:
             app.UseGlobalExceptionHandler(exConfig =>
-            {
-                exConfig.ContentType = "application/json";
-                exConfig.ResponseBody(ex => 
                 {
-                    if(Environment.IsDevelopment())
-                    {
-                        return JsonConvert.SerializeObject(new
+                    exConfig.ContentType = "application/json";
+                    exConfig.ResponseBody(ex => 
+                        {
+                            // ToDo: See if there is a way to access HttpContext in this handler.
+                            if(Environment.IsDevelopment())
                             {
-                                Message = "Something went wrong.",
-                                HttpContextAccessor.HttpContext.TraceIdentifier,
-                                ExceptionInfo = ex.ToString()
-                            });
-                    }
-                    else
-                    {
-                        return JsonConvert.SerializeObject(new
+                                return JsonConvert.SerializeObject(new
+                                    {
+                                        //HttpContextAccessor.HttpContext.TraceIdentifier,
+                                        Message = "Something went wrong.",
+                                        ExceptionInfo = ex.ToString()
+                                    });
+                            }
+                            else
                             {
-                                Message = "Something went wrong.",
-                                HttpContextAccessor.HttpContext.TraceIdentifier,
-                            });
-                    }
+                                return JsonConvert.SerializeObject(new
+                                    {
+                                        //HttpContextAccessor.HttpContext.TraceIdentifier,
+                                        Message = "Something went wrong."
+                                    });
+                            }
+                        });
                 });
-            });
 
             // > This is a simple sample of custom middleware:
             app.Use(async (context, next) =>
-            {
-                Console.WriteLine("*** *** *** THIS IS A MIDDLEWARE TEST 1 *** *** ***");
-                await next.Invoke();
-                Console.WriteLine("*** *** *** THIS IS A MIDDLEWARE TEST 2 *** *** ***");
-            });
+                {
+                    Console.WriteLine("*** *** *** THIS IS A MIDDLEWARE TEST 1 *** *** ***");
+                    await next.Invoke();
+                    Console.WriteLine("*** *** *** THIS IS A MIDDLEWARE TEST 2 *** *** ***");
+                });
 
             // > Use forwarded headers so authentication will work when running under Kubernetes (KnownNetworks should
             //   probably be configured!):
@@ -131,14 +128,23 @@ namespace Blp.NetCoreLearning.WebApp
             // > Static files will be unauthenticated:
             app.UseStaticFiles();
 
+            app.UseRouting();
+
             // > Anything below here will use authentication:
             app.UseAuthentication();
+            app.UseAuthorization();
 
-            // > Use MVC:
-            app.UseMvc(configureRoutes =>
+            app.UseEndpoints(endpoints =>
                 {
-                    configureRoutes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+                    endpoints.MapRazorPages();
                 });
+
+            // > Pre endpoint routing way of using MVC:
+            //app.UseMvc(configureRoutes =>
+            //    {
+            //        configureRoutes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}");
+            //    });
         }
     }
 }
