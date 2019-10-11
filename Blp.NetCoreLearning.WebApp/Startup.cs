@@ -1,6 +1,7 @@
 ﻿using Blp.NetCoreLearning.WebApp.Extensions;
 using Blp.NetCoreLearning.WebApp.Filters;
 using Blp.NetCoreLearning.WebApp.Options;
+using Blp.NetCoreLearning.WebApp.Services;
 using GlobalExceptionHandler.WebApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -63,6 +64,7 @@ namespace Blp.NetCoreLearning.WebApp
                     config.Populate(services);
                 });
 
+
             return container.GetInstance<IServiceProvider>();
         }
 
@@ -79,6 +81,9 @@ namespace Blp.NetCoreLearning.WebApp
             //    app.UseExceptionHandler("/Home/Error");
             //}
 
+            StaticHttpContextAccessor.Configure(
+                app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
+
             app.UsePathBase(Configuration["PathBase"]);
 
             // > Exception Handling:
@@ -87,12 +92,11 @@ namespace Blp.NetCoreLearning.WebApp
                     exConfig.ContentType = "application/json";
                     exConfig.ResponseBody(ex => 
                         {
-                            // ToDo: See if there is a way to access HttpContext in this handler.
                             if(Environment.IsDevelopment())
                             {
                                 return JsonConvert.SerializeObject(new
                                     {
-                                        //HttpContextAccessor.HttpContext.TraceIdentifier,
+                                        StaticHttpContextAccessor.HttpContext?.TraceIdentifier,
                                         Message = "Something went wrong.",
                                         ExceptionInfo = ex.ToString()
                                     });
@@ -101,7 +105,7 @@ namespace Blp.NetCoreLearning.WebApp
                             {
                                 return JsonConvert.SerializeObject(new
                                     {
-                                        //HttpContextAccessor.HttpContext.TraceIdentifier,
+                                        StaticHttpContextAccessor.HttpContext?.TraceIdentifier,
                                         Message = "Something went wrong."
                                     });
                             }
