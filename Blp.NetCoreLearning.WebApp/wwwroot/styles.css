@@ -1,5 +1,6 @@
 ﻿body {
     background-color:antiquewhite;
+    font-size: 12pt;
 }
 
 div.MenuBar {
@@ -48,3 +49,27 @@ table.DetailTable {
         padding: 2px;
         text-align: left;
     }
+
+h1 {
+    font-size: 18pt;
+}
+
+h2 {
+    font-size: 17pt;
+}
+
+h3 {
+    font-size: 16pt;
+}
+
+h4 {
+    font-size: 15pt;
+}
+
+h5 {
+    font-size: 14pt;
+}
+
+h6 {
+    font-size: 13pt;
+}

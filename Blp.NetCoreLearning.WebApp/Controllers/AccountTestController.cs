@@ -47,7 +47,7 @@ namespace Blp.NetCoreLearning.WebApp.Controllers
             return Challenge(new AuthenticationProperties
             {
                 RedirectUri = redirectUrl
-            }, AuthenticationExtensions.AzureAdOpenIdConnectScheme);
+            }, AuthenticationServiceCollectionExtensions.AzureAdOpenIdConnectScheme);
         }
 
         [HttpGet]
@@ -61,7 +61,7 @@ namespace Blp.NetCoreLearning.WebApp.Controllers
                 },
                 IdentityConstants.ApplicationScheme,
                 IdentityConstants.ExternalScheme,
-                AuthenticationExtensions.AzureAdOpenIdConnectScheme);
+                AuthenticationServiceCollectionExtensions.AzureAdOpenIdConnectScheme);
         }
 
         [HttpGet]

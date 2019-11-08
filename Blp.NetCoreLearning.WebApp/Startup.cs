@@ -1,5 +1,4 @@
 ﻿using Blp.NetCoreLearning.WebApp.Extensions;
-using Blp.NetCoreLearning.WebApp.Filters;
 using Blp.NetCoreLearning.WebApp.Options;
 using Blp.NetCoreLearning.WebApp.Services;
 using GlobalExceptionHandler.WebApi;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,7 +33,7 @@ namespace Blp.NetCoreLearning.WebApp
         {
             services.Configure<AuthOptions>(Configuration.GetSection("Authentication"));
             services.Configure<EmailOptions>(Configuration.GetSection("SMTP"));
-            
+
             services.AddHttpContextAccessor();
 
             services.AddDistributedSqlServerCache(opt =>
@@ -47,30 +46,27 @@ namespace Blp.NetCoreLearning.WebApp
             services.SetupDataProtection(Configuration);
             services.SetupAuthentication(Configuration);
             services.SetupIdentity(Configuration);
-
-            services
-                .AddMvc(opts =>
-                    {
-                        opts.Filters.Add(typeof(AdalTokenAcquisitionExceptionFilter));
-                    })
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
-                .AddControllersAsServices();
+            services.SetupMvc();
 
             Container container = new Container();
 
-            container.Configure(config => 
+            container.Configure(config =>
                 {
                     config.AddRegistry(new ServicesRegistry(Configuration, Environment));
                     config.Populate(services);
                 });
 
-
             return container.GetInstance<IServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {
+            StaticHttpContextAccessor.Configure(
+                app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
+
+            app.UsePathBase(Configuration["PathBase"]);
+
             // > Exception Handling:
             //if (Environment.IsDevelopment())
             //{
@@ -81,39 +77,35 @@ namespace Blp.NetCoreLearning.WebApp
             //    app.UseExceptionHandler("/Home/Error");
             //}
 
-            StaticHttpContextAccessor.Configure(
-                app.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
-
-            app.UsePathBase(Configuration["PathBase"]);
-
             // > Exception Handling:
             app.UseGlobalExceptionHandler(exConfig =>
                 {
                     exConfig.ContentType = "application/json";
-                    exConfig.ResponseBody(ex => 
+                    exConfig.ResponseBody(ex =>
                         {
-                            if(Environment.IsDevelopment())
+                            if (Environment.IsDevelopment())
                             {
                                 return JsonConvert.SerializeObject(new
-                                    {
-                                        StaticHttpContextAccessor.HttpContext?.TraceIdentifier,
-                                        Message = "Something went wrong.",
-                                        ExceptionInfo = ex.ToString()
-                                    });
+                                {
+                                    StaticHttpContextAccessor.HttpContext?.TraceIdentifier,
+                                    Message = "Something went wrong.",
+                                    ExceptionInfo = ex.ToString()
+                                });
                             }
                             else
                             {
                                 return JsonConvert.SerializeObject(new
-                                    {
-                                        StaticHttpContextAccessor.HttpContext?.TraceIdentifier,
-                                        Message = "Something went wrong."
-                                    });
+                                {
+                                    StaticHttpContextAccessor.HttpContext?.TraceIdentifier,
+                                    Message = "Something went wrong."
+                                });
                             }
                         });
                 });
 
             // > This is a simple sample of custom middleware:
-            app.Use(async (context, next) =>
+            app.Use(
+                async (context, next) =>
                 {
                     Console.WriteLine("*** *** *** THIS IS A MIDDLEWARE TEST 1 *** *** ***");
                     await next.Invoke();
@@ -123,15 +115,12 @@ namespace Blp.NetCoreLearning.WebApp
             // > Use forwarded headers so authentication will work when running under Kubernetes (KnownNetworks should
             //   probably be configured!):
             ForwardedHeadersOptions fho = new ForwardedHeadersOptions()
-                { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto };
+            { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto };
             IPAddress address1 = IPAddress.Parse("::ffff:10.0.0.0");
             IPNetwork network1 = new IPNetwork(address1, 104);
             fho.KnownNetworks.Add(network1);
             app.UseForwardedHeaders(fho);
-
-            // > Static files will be unauthenticated:
             app.UseStaticFiles();
-
             app.UseRouting();
 
             // > Anything below here will use authentication:
@@ -142,6 +131,19 @@ namespace Blp.NetCoreLearning.WebApp
                 {
                     endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                     endpoints.MapRazorPages();
+                });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+                {
+                    // build a swagger endpoint for each discovered API version
+                    foreach (var description in provider.ApiVersionDescriptions)
+                    {
+                        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                    }
+
+                    // Disable try it out feature:
+                    options.SupportedSubmitMethods();
                 });
 
             // > Pre endpoint routing way of using MVC:

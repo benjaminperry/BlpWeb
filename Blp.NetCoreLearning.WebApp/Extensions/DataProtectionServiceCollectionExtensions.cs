@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Blp.NetCoreLearning.WebApp.Extensions
 {
-    public static class DataProtectionExtensions
+    public static class DataProtectionServiceCollectionExtensions
     {
         public static IDataProtectionBuilder SetupDataProtection(this IServiceCollection services, IConfiguration configuration)
         {

@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Blp.NetCoreLearning.WebApp.Extensions
 {
-    public static class IdentityExtensions
+    public static class IdentityServiceCollectionExtensions
     {
         public static IdentityBuilder SetupIdentity(this IServiceCollection services, IConfiguration configuration)
         {

@@ -82,7 +82,7 @@ namespace Blp.NetCoreLearning.WebApp.Areas.Identity.Pages.Account
                 // Begin customized by Ben: If user logged in using Azure AD OpenId Connect, copy the 
                 // objectidifier claim. The combined with the access token will allow us to query Microsoft
                 // graph for info reguarding this user.
-                if (info.LoginProvider == AuthenticationExtensions.AzureAdOpenIdConnectScheme)
+                if (info.LoginProvider == AuthenticationServiceCollectionExtensions.AzureAdOpenIdConnectScheme)
                 {
                     var user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
                     IList<Claim> claims = await _userManager.GetClaimsAsync(user);
@@ -146,7 +146,7 @@ namespace Blp.NetCoreLearning.WebApp.Areas.Identity.Pages.Account
                         // Begin customized by Ben: If user logged in using Azure AD OpenId Connect, copy the 
                         // objectidifier claim. The combined with the access token will allow us to query Microsoft
                         // graph for info reguarding this user.
-                        if (info.LoginProvider == AuthenticationExtensions.AzureAdOpenIdConnectScheme)
+                        if (info.LoginProvider == AuthenticationServiceCollectionExtensions.AzureAdOpenIdConnectScheme)
                         {
                             await _userManager.AddClaimAsync(
                                 user, 

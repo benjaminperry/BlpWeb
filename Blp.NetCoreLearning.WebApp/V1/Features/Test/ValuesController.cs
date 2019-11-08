@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Blp.NetCoreLearning.WebApp.Controllers
+namespace Blp.NetCoreLearning.WebApp.V1.Features
 {
     [Authorize(Roles = IdentityRoles.Administrator)]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Route("api/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class ValuesController : ControllerBase
     {
         // GET api/values
@@ -18,7 +16,7 @@ namespace Blp.NetCoreLearning.WebApp.Controllers
         {
             ValuesController x = this;
             
-            return Ok(new string[] { "value1", "value2" });
+            return Ok(new string[] {"API Version 1.0", "value1", "value2" });
         }
 
         // GET api/values/5

@@ -12,7 +12,7 @@ using System;
 
 namespace Blp.NetCoreLearning.WebApp.Extensions
 {
-    public static class AuthenticationExtensions
+    public static class AuthenticationServiceCollectionExtensions
     {
         public const string AzureAdOpenIdConnectScheme = "AzureAdOpenIdConnect";
 
