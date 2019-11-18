@@ -1,6 +1,7 @@
 ﻿using Blp.NetCoreLearning.WebApp.Extensions;
 using Blp.NetCoreLearning.WebApp.Options;
 using Blp.NetCoreLearning.WebApp.Services;
+using Blp.NetCoreLearning.WebApp.Swagger;
 using GlobalExceptionHandler.WebApi;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -133,13 +134,19 @@ namespace Blp.NetCoreLearning.WebApp
                     endpoints.MapRazorPages();
                 });
 
-            app.UseSwagger();
+            app.UseSwaggerAuthorize();
+            app.UseSwagger(options =>
+            {
+                options.RouteTemplate = $"{SwaggerDefaultValues.SwaggerRoute}/{{documentName}}/swagger.json";
+            });
             app.UseSwaggerUI(options =>
                 {
+                    options.RoutePrefix = SwaggerDefaultValues.SwaggerRoute;
+
                     // build a swagger endpoint for each discovered API version
                     foreach (var description in provider.ApiVersionDescriptions)
                     {
-                        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                        options.SwaggerEndpoint($"{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
                     }
 
                     // Disable try it out feature:

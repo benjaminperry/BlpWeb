@@ -14,6 +14,8 @@ namespace Blp.NetCoreLearning.WebApp.Swagger
     /// Once they are fixed and published, this class can be removed.</remarks>
     public class SwaggerDefaultValues : IOperationFilter
     {
+        public const string SwaggerRoute = "swagger";
+
         /// <summary>
         /// Applies the filter to the specified operation using the given context.
         /// </summary>
